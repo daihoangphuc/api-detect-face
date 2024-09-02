@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import face_recognition
@@ -31,8 +32,8 @@ def predict():
         img = np.array(image)
 
         # Convert image to RGB (PIL loads images as RGB by default)
-        img_rgb = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-
+        img_rgb = img
+        
         # Detect faces
         img_encoding = face_recognition.face_encodings(img_rgb)
 
