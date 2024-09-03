@@ -29,11 +29,10 @@ def predict():
         # Decode the base64 image
         image_data = data['image'].split(',')[1]
         image = Image.open(BytesIO(base64.b64decode(image_data)))
-        img = np.array(image)
 
-        # Convert image to RGB (PIL loads images as RGB by default)
-        img_rgb = img
-        
+        # Convert image to RGB
+        img_rgb = np.array(image.convert('RGB'))
+
         # Detect faces
         img_encoding = face_recognition.face_encodings(img_rgb)
 
@@ -49,5 +48,5 @@ def predict():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000))
 
