@@ -38,6 +38,10 @@ jobs:
         run: |
           git remote add heroku https://git.heroku.com/nhan-dien-dai-bieu.git
 
+      - name: Pull from Heroku
+        run: |
+          git pull heroku main || true  # Bỏ qua lỗi nếu không có thay đổi
+
       - name: Deploy to Heroku
         run: |
           git push heroku main
