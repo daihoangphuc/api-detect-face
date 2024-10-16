@@ -28,7 +28,7 @@ def load_images_from_folder(folder):
     return images, labels
 
 # Đường dẫn đến thư mục chứa ảnh
-folder_path = 'D:/@training_face/Deploy_API_Heruku/training_face'
+folder_path = 'D:/HocKy7/api-detect-face/training_face'
 images, labels = load_images_from_folder(folder_path)
 
 # Huấn luyện bộ phân loại KNN
@@ -38,7 +38,7 @@ knn_clf.fit(images, labels)
 print("Training completed.")
 
 # Lưu mô hình đã huấn luyện
-model_path = 'Deploy_API_Heruku/knn_model.pkl'
+model_path = 'knn_model.pkl'
 print(f"Saving the trained model to {model_path}...")
 joblib.dump(knn_clf, model_path)
 print("Model saved successfully.")
