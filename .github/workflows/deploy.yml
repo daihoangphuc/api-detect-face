@@ -3,7 +3,7 @@ name: Deploy to Heroku
 on:
   push:
     branches:
-      - main  # Tự động triển khai khi có commit lên nhánh main
+      - main  # Tự động triển khai khi có commit lên main
   pull_request:
     branches:
       - main
