@@ -21,19 +21,25 @@ def index():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    data = request.json
-    if 'image' not in data:
-        return jsonify({'error': 'No image provided'}), 400
+    if 'image' in request.files:
+        file = request.files['image']
+        image = Image.open(file.stream)
+        buffered = BytesIO()
+        image.save(buffered, format="JPEG")
+        img_str = base64.b64encode(buffered.getvalue()).decode()
+        # Thêm tiền tố nếu cần
+        base64_image = "data:image/jpeg;base64," + img_str
+    else:
+        data = request.json
+        if not data or 'image' not in data:
+            return jsonify({'error': 'No image provided'}), 400
+        base64_image = data['image']
 
     try:
-        # Decode the base64 image
-        image_data = data['image'].split(',')[1]
+        # Xử lý chuỗi base64 như cũ
+        image_data = base64_image.split(',')[1]
         image = Image.open(BytesIO(base64.b64decode(image_data)))
-
-        # Convert image to RGB
         img_rgb = np.array(image.convert('RGB'))
-
-        # Detect faces
         img_encoding = face_recognition.face_encodings(img_rgb)
 
         if len(img_encoding) == 0:
@@ -44,8 +50,9 @@ def predict():
         return jsonify({'name': matches[0]})
     
     except Exception as e:
-        print(f"Error: {str(e)}")  # Log errors for debugging
+        print(f"Error: {str(e)}")
         return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
